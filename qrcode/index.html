@@ -6,11 +6,50 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript" src="qrcode.js"></script>
+<style>
+.overlay {
+	display:none;
+	position: fixed;
+	padding-top: 100px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.5);
+}
+
+.overlay-content {
+	position: relative;
+	background-color: white;
+	margin: auto;
+	border: 1px solid #999;
+	width: 80%;
+}
+
+.close {
+	color:white;
+	float: right;
+	font-size: 25px;
+	font-weight: bolder;
+}
+
+.close:hover,
+
+.overlay-header {
+	padding: 4px 20px;
+	background-color: blue;
+	color: white;
+}
+
+</style>
 </head>
 <body>
-<h1>  <center>QRCode</center></h1>
+
+<h1><center></center></h1>
 <p><center>Scan this code to access your google directions.</center></p>
-<div id="qrcode" style="width:250px; height:250px; margin-top:50px; margin-right:auto; margin-left:auto; margin-bottom:auto;"></div>
+<div id="qrcode" style="width:250px; height:250px; margin-top:20px; margin-right:auto; margin-left:auto; margin-bottom:auto;"></div>
+
 
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
