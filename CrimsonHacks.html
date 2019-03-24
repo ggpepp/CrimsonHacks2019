@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <title>Directions Service</title>
+  <style>
+  /* Always set the map height explicitly to define the size of the div
+  * element that contains the map. */
+  #map {
+    height: 425px;
+  }
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #floating-panel {
+    position: absolute;
+    top: 10px;
+    left: 25%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    line-height: 30px;
+    padding-left: 10px;
+  }
+</style>
+</head>
+<body>
+  <div id="floating-panel">
+    <b>Start: </b>
+    <input type="text" id="start">
+    <b>End: </b>
+    <input type="text" id="end">
+    <b>Distance: </b>
+    <input type="text" id="distance">
+  </div>
+  <div id="map"></div>
+  <script>
+  function initMap() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 7,
+      center: {lat: 41.85, lng: -87.65}
+    });
+    var geocoderO = new google.maps.Geocoder();
+    var geocoderT = new google.maps.Geocoder();
+    var coords = [];
+    directionsDisplay.setMap(map);
+
+    var onChangeHandler = function() {
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+      var a = geocodeAddress(geocoderO, map, 'start');
+      var b = geocodeAddress(geocoderT, map, 'end');
+    };
+    document.getElementById('start').addEventListener('change', onChangeHandler);
+    document.getElementById('end').addEventListener('change', onChangeHandler);
+    document.getElementById('distance').addEventListener('change', onChangeHandler);
+
+    function geocodeAddress(geocoder, resultsMap, elem) {
+          var address = document.getElementById(elem).value;
+          geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+              resultsMap.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker({
+                map: resultsMap,
+                position: results[0].geometry.location
+              });
+              coords.push(results[0].geometry.location.lat());
+              coords.push(results[0].geometry.location.lng());
+
+              if(coords.length == 4){
+                coords.push((coords[0]+coords[2])/2);
+                coords.push((coords[1]+coords[3])/2);
+                waypts.push(new google.maps.LatLng(coords[4], coords[5]));
+                console.log(waypts[0]);
+              }
+
+            } else {
+              alert('Geocode was not successful for the following reason: ' + status);
+            }
+          });
+        }
+  function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+    var waypts = [];
+    var goal = document.getElementById('distance').value;
+    var dist = 0;
+    while(Math.abs(dist-goal) > .1){
+      dist++;
+    }
+
+    directionsService.route({
+      origin: document.getElementById('start').value,
+      destination: document.getElementById('end').value,
+      travelMode: 'WALKING'
+    }, function(response, status) {
+      if (status === 'OK') {
+        directionsDisplay.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  }
+}
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwJVFi6ycHYiBzSfBQ2moAsn4qTrNtAo4&callback=initMap"></script>
+</body>
+</html>
