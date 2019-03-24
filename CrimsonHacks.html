@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-  <meta name="author" content="Connor Meadows and Garrett Peppers"
+  <meta name="author" content="Connor Meadows and Garrett Peppers">
   <meta charset="utf-8">
   <title>Directions Service</title>
   <link rel="stylesheet" type="text/css" href="stylez.css">
@@ -53,6 +53,9 @@
     document.getElementById('dista').addEventListener('change', onChangeHandler);
 
     function geocodeAddress(geocoder, resultsMap, elem) {
+          if(coords.length >= 4){
+            coords = [];
+          }
           var address = document.getElementById(elem).value;
           geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
@@ -69,8 +72,6 @@
                 coords.push((coords[1]+coords[3])/2);
                 waypts.push({location: new google.maps.LatLng(coords[4], coords[5]),
                              stopover: true});
-                console.log(coords[0]);
-                console.log(coords[2]);
                 calculateAndDisplayRoute(directionsService, directionsDisplay);
               }
             } else {
@@ -87,11 +88,12 @@
     var d = 3961*c;
     waypts[0] = ({location: new google.maps.LatLng(coords[0]+(dista-d)*0.0072, coords[1]),
                   stopover: true});
+    console.log(waypts);
     directionsService.route({
         origin: document.getElementById('start').value,
         destination: document.getElementById('end').value,
         waypoints: waypts,
-        optimizeWaypoints: false,
+        optimizeWaypoints: true,
         travelMode: 'WALKING'
       }, function(response, status) {
         if (status === 'OK') {
@@ -120,16 +122,16 @@
       <tr>
         <td>
           <ul>
-            <li>Google Maps Javascript API</li>
-            <li>Github for Desktop</li>
+            <li>Google Maps Javascript API, </li>
+            <li>Github for Desktop, </li>
             <li>Atom Text Editor</li>
           </ul>
         </td>
         <td>
           <ol>
-            <li>Listening for changes</li>
-            <li>Geocode Component</li>
-            <li>Rendering Component</li>
+            <li>Listening for changes, </li>
+            <li>Geocode Component, </li>
+            <li>Rendering Component, </li>
             <li>Mathematical Component</li>
           </ol>
         </td>

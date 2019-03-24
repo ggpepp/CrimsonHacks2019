@@ -7,6 +7,7 @@ html, body {
   padding: 0;
   background-color: #cdfb6c;
   align: center;
+  text-color: white;
 }
 #floating-panel {
   position: absolute;
@@ -22,10 +23,23 @@ html, body {
   padding-left: 10px;
 }
 table {
-  horizontal-align = center;
+  text-align: center;
+  align = center;
   padding-top: 0px;
+  width: 100%;
 }
 h1{
-  align = center;
+  width: 10;
+  align-self: center;
+  text-align = center;
   padding-bottom: 0px;
+  padding-left: 45%;
+}
+td{
+  align: center;
+  width: 25%;
+}
+li, ul, ol{
+  text-align: center;
+  display: inline-block;
 }
